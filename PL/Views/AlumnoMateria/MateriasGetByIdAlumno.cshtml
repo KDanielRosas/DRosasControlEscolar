@@ -1,0 +1,88 @@
+﻿@model ML.Result
+@{
+    ViewBag.Title = "MateriasGetByIdAlumno";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2> AlumnoMateria </h2>
+        </div>
+        <div class="col">
+            <div style="float:right">
+                @Html.ActionLink("Agregar Materias", "Form", "AlumnoMateria", 
+               htmlAttributes: new { @class = "btn btn-success" })
+            </div><!--style-->
+        </div>
+        <hr />
+    </div> <!--row-->
+
+    <div class="row">
+        <div class="col">
+            <label>Nombre Alumno</label>
+            <input value="@ViewBag.AlumnoNombre" disabled class="form-control"/>
+        </div>
+    </div>
+    <br /> <br />
+    <div class="row" style="text-align:center">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-8">
+
+            @if (Model.Objects != null && Model.Objects.Count != 0)
+            {
+
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td class="visually-hidden col">IdAlumnoMaterias</td>
+                            <td class="visually-hidden col">IdAlumno</td>
+                            <td class="visually-hidden col">IdMateria</td>
+                            <td class="text-center col" style="font-weight:bold;">NombreMateria</td>
+                            <td class="text-center col" style="font-weight:bold;">Costo</td> 
+                            <td class="text-center col" style="font-weight:bold;">Eliminar</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (ML.AlumnoMaterias alumnoMaterias in Model.Objects)
+                        {
+                            <tr>
+                                <td class="visually-hidden">@alumnoMaterias.IdAlumnoMateria</td>
+                                <td class="visually-hidden">@alumnoMaterias.Alumno.IdAlumno</td>
+                                <td class="visually-hidden">@alumnoMaterias.Materia.IdMateria</td>
+                                <td class="col">@alumnoMaterias.Materia.Nombre</td>
+                                <td class="col">@alumnoMaterias.Materia.Costo</td>
+                                <td class="col">
+                                    <a class="btn btn-danger"
+                                       href="@Url.Action("AlumnoMateriasDelete", "AlumnoMateria",
+                                                            new { IdAlumnoMaterias = alumnoMaterias.IdAlumnoMateria})">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            else
+            {
+                <div class="alert alert-danger" role="alert">No hay materias registradas</div>
+            }
+
+        </div>
+
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col" style="text-align:end">
+            <label>SubTotal: </label>
+            <input value="@Model.SubTotal" disabled />
+        </div>
+        
+    </div>
+
+</div><!--container-->

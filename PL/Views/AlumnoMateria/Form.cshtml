@@ -1,0 +1,106 @@
+﻿@model ML.AlumnoMaterias
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript">
+        function AddMaterias() {
+            var idAlumno = @Model.Alumno.IdAlumno;
+            let array = [];
+            let checkBoxes = document.querySelectorAll("input[type='checkbox']:checked");
+
+             checkBoxes.forEach((item) => {
+                array.push(item.value)
+             })
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddMateria")',
+                dataType: 'json',
+                data: { array, idAlumno },
+                success: function (response) {
+                    alert('Se registraron las materias correctamente');
+                    $('input[type=checkbox]').prop('checked', false);
+                    location.reload();
+                },
+                error: function (ex) {
+                    if (array.length == 0) {
+                        alert('No hay materias seleccionadas para añadir.')
+                    }
+                    else {
+                        alert('Error: ' + ex);
+                    }                    
+                }
+            });
+        }
+    </script>
+</head>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2>
+                Agregar Materias al Alumno: <br />
+                @Model.Alumno.Nombre @Model.Alumno.ApellidoPaterno @Model.Alumno.ApellidoMaterno
+            </h2>
+            <p>Al dar clic en el botón verde, se añadirá la materia</p>
+        </div>
+        <div class="col">
+            <div style="float:right">
+                @Html.ActionLink("Regresar", "MateriasGetByIdAlumno", "AlumnoMateria",
+               new { IdAlumno = Model.Alumno.IdAlumno }, htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+        <hr />
+    </div>
+
+    <div class="row justify-content-center" style="text-align:center">
+        <div class="col-md-6">
+            @if (Model.Materia.ListMaterias != null && Model.Materia.ListMaterias.Count > 0)
+            {
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td class="visually-hidden">IdMateria</td>
+                            <td class="text-center" style="font-weight:bold;">Nombre</td>
+                            <td class="text-center" style="font-weight:bold;">Costo</td>
+                            <td class="text-center col-xs-1" style="font-weight:bold;"></td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (ML.Materias materia in Model.Materia.ListMaterias)
+            {
+                            <tr>
+                                <td class="visually-hidden">@materia.IdMateria</td>
+                                <td class="col">@materia.Nombre</td>
+                                <td class="col">@materia.Costo</td>
+                                @*<td class="col" style="text-align:center">
+                                    <a class="btn btn-success" href="@Url.Action("MateriasAdd","AlumnoMateria", new { IdAlumno = Model.Alumno.IdAlumno, IdMateria = materia.IdMateria })">+</a>
+                                </td>*@
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" value="@materia.IdMateria"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-danger" role="alert">No hay materias disponibles para agregar</div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col" style="text-align:end">
+            <button class="btn btn-success" onclick="AddMaterias()">Agregar</button>
+        </div>
+    </div>
+</div><!--Container-->

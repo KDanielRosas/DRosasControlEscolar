@@ -1,0 +1,65 @@
+﻿@model ML.Result
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2> AlumnoMateria </h2>
+            <p>Presione el botón amarillo para añadir materias al alumno</p>
+        </div>
+        <hr />
+    </div> <!--row-->
+
+    <div class="row" style="text-align:center">
+        <div class="col-6 col-md-2"></div>
+        <div class="col-6 col-md-8">
+
+            @if (Model.Objects != null)
+            {
+
+                <table class="table table-bordered table-responsive">
+                    <thead>
+                        <tr>
+                            <td class="text-center col-md-1" style="font-weight:bold;"></td>
+
+                            <td class="visually-hidden">IdAlumno</td>
+                            <td class="text-center col" style="font-weight:bold;">Nombre</td>
+                            <td class="text-center col" style="font-weight:bold;">ApellidoPaterno</td>
+                            <td class="text-center col" style="font-weight:bold;">ApellidoMaterno</td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (ML.Alumnos alumno in Model.Objects)
+                        {
+                            <tr>
+                                <td class="text-center col-md-1">
+                                    <a class="btn btn-warning"
+                                       href="@Url.Action("MateriasGetByIdAlumno", "AlumnoMateria",
+                                                            new { IdAlumno = alumno.IdAlumno})">
+                                        <i class="fa-regular fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                                <td class="visually-hidden">@alumno.IdAlumno</td>
+                                <td class="col">@alumno.Nombre</td>
+                                <td class="col">@alumno.ApellidoPaterno</td>
+                                <td class="col">@alumno.ApellidoMaterno</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+
+            else
+            {
+                <div class="alert alert-danger" role="alert">Ocurrio un error!!</div>
+            }
+
+        </div>
+
+    </div>
+
+</div><!--container-->
