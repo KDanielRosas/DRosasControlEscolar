@@ -12,49 +12,10 @@ namespace PL.Controllers
         // GET: AlumnoMateria
         public ActionResult GetAll()
         {
-            /*
-            var serv = new AlumnoServicios.AlumnoServiceClient();
-
-            var list = serv.GetAll();
-
-            ML.Result result = new ML.Result();
-            result.Objects = new List<object>();
-
-            foreach (var item in list)
-            {
-                ML.Alumnos alumno = new ML.Alumnos();
-                alumno.IdAlumno = item.IdAlumno;
-                alumno.Nombre = item.Nombre;
-                alumno.ApellidoPaterno = item.ApellidoPaterno;
-                alumno.ApellidoMaterno = item.ApellidoMaterno;
-
-                result.Objects.Add(alumno);
-            }
-            */
-
             ML.Result result = BL.Alumnos.GetAll();
 
             return View(result);
         }//GetAll
-
-        public ML.Alumnos GetById(int idAlumno)
-        {
-            /*
-            var serv = new AlumnoServicios.AlumnoServiceClient();
-
-            var obj = serv.GetById(idAlumno);
-            ML.Alumnos alumno = new ML.Alumnos();
-            alumno.IdAlumno = obj.IdAlumno;
-            alumno.Nombre = obj.Nombre;
-            alumno.ApellidoPaterno = obj.ApellidoPaterno;
-            alumno.ApellidoMaterno = obj.ApellidoMaterno;
-            */
-
-            ML.Result result = BL.Alumnos.GetById(idAlumno);
-            ML.Alumnos alumno = (ML.Alumnos)result.Object;
-
-            return alumno;
-        }//GetById
 
         public ActionResult MateriasGetByIdAlumno(int? IdAlumno)
         {
@@ -62,8 +23,10 @@ namespace PL.Controllers
             {
                 IdAlumno = int.Parse(TempData["IdAlumno"].ToString());
             }
+
             TempData["IdAlumno"] = IdAlumno;
-            ML.Alumnos alumno = GetById(IdAlumno.Value);
+            ML.Result resultAlumno = BL.Alumnos.GetById(IdAlumno.Value);
+            ML.Alumnos alumno = (ML.Alumnos)resultAlumno.Object;
             ViewBag.AlumnoNombre = (alumno.Nombre + " " + alumno.ApellidoPaterno + " " + alumno.ApellidoMaterno);
             ML.Result result = BL.AlumnoMaterias.GetByIdAlumno(IdAlumno.Value);
 
