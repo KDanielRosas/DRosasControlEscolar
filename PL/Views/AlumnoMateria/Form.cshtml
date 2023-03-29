@@ -67,7 +67,7 @@
                             <td class="visually-hidden">IdMateria</td>
                             <td class="text-center" style="font-weight:bold;">Nombre</td>
                             <td class="text-center" style="font-weight:bold;">Costo</td>
-                            <td class="text-center col-xs-1" style="font-weight:bold;"></td>
+                            <td class="text-center col-xs-1" style="font-weight:bold;">Seleccionar</td>
                         </tr>
                     </thead>
 
@@ -81,10 +81,10 @@
                                 @*<td class="col" style="text-align:center">
                                     <a class="btn btn-success" href="@Url.Action("MateriasAdd","AlumnoMateria", new { IdAlumno = Model.Alumno.IdAlumno, IdMateria = materia.IdMateria })">+</a>
                                 </td>*@
-                                <td>
-                                    <div class="form-check form-switch">
+                                <td class="col" style="text-align:center">
+                                    @*<div class="form-check form-check" style="text-align:center"> *@
                                         <input class="form-check-input" type="checkbox" value="@materia.IdMateria"/>
-                                    </div>
+                                    @**</div> *@
                                 </td>
                             </tr>
                         }
